@@ -11,7 +11,9 @@
 # Version: 2.0.5
 # License: MIT License
 # ---------------------------------------------------
-
+import threading
+import os
+from aiohttp import web
 import asyncio
 import importlib
 import gc
@@ -56,8 +58,18 @@ async def devggn_boot():
     await idle()
     print("Bot stopped...")
 
+async def run_dummy_web_server():
+    port = int(os.environ.get("PORT", 8080))
+    app = web.Application()
+    app.router.add_get("/", lambda request: web.Response(text="Bot is running fine ❤️"))
+
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, host="0.0.0.0", port=port)
+    await site.start()
 
 if __name__ == "__main__":
-    loop.run_until_complete(devggn_boot())
+    loop.create_task(run_dummy_web_server())  # Run same event loop
+    loop.run_until_complete(devggn_boot())    # Start bot
 
 # ------------------------------------------------------------------ #
