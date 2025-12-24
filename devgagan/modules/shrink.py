@@ -106,7 +106,7 @@ async def token_handler(client, message):
                 "user_id": user_id,
                 "param": param,
                 "created_at": datetime.utcnow(),
-                "expires_at": datetime.utcnow() + timedelta(hours=3),
+                "expires_at": datetime.utcnow() + timedelta(hours=1),
             })
             del Param[user_id]   
             await message.reply("✅ You have been verified successfully! Enjoy your session for next 3 hours.")
